@@ -874,7 +874,7 @@ function hooks_page_edit()
     $form_container = new FormContainer($lang->hooks_edit);
 
     echo $form->generate_hidden_field('hook',
-                                      intval($mybb->input['hook']),
+                                      $mybb->input['hook'],
                                       array('id' => 'hook'));
 
     $form_container->output_row(
@@ -1002,7 +1002,7 @@ function hooks_page_import()
                         }
 
                         $inserts[] = array(
-                            'hactive' => '0',
+                            'hactive' => 0,
                             'hhook' => $db->escape_string($hook['hhook']),
                             'htitle' => $db->escape_string($hook['htitle']),
                             'hdescription' => $db->escape_string($hook['hdescription']),
