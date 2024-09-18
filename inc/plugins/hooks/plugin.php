@@ -315,7 +315,10 @@ function hooks_create_function($arg, $code)
     if($result !== false)
     {
         // create_function test.
-        $result = @create_function($arg, $code);
+        if(function_exists('create_function'))
+        {
+            $result = @create_function($arg, $code);
+        }
     }
 
     return $result !== false;
