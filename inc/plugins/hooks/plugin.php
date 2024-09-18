@@ -254,6 +254,8 @@ function hooks_update_data()
                                 'hactive=1',
                                 array('order_by' => 'hhook,hpriority,hid'));
 
+    $hooks = [];
+
     while($row = $db->fetch_array($query))
     {
         $hooks[] = $row;
@@ -384,7 +386,7 @@ function hooks_plugins_begin()
 
         $page->add_breadcrumb_item($lang->hooks, HOOKS_URL);
 
-        switch($mybb->input['mode'])
+        switch($mybb->get_input('mode'))
         {
             case 'activate':
                 hooks_action_activate();
@@ -733,18 +735,34 @@ function hooks_page_edit()
 
     $lang->load('hooks');
 
-    $hid = intval($mybb->input['hook']);
+    $hid = $mybb->input['hook'] = $mybb->get_input('hook', \MyBB::INPUT_INT);
+
+    $mybb->input['hhook'] = $mybb->get_input('hhook');
+
+    $mybb->input['htitle'] = $mybb->get_input('htitle');
+
+    $mybb->input['hdescription'] = $mybb->get_input('hdescription');
+
+    $mybb->input['hpriority'] = $mybb->get_input('hpriority');
+
+    $argument = $mybb->input['hargument'] = $mybb->get_input('hargument');
+
+    $mybb->input['hcode'] = $mybb->get_input('hcode');
+
+    $mybb->input['preview'] = $mybb->get_input('preview');
+
+    $errors = array();
+
+    $preview = false;
 
     if($mybb->request_method == 'post')
     {
-        if($mybb->input['cancel'])
+        if($mybb->get_input('cancel'))
         {
             admin_redirect(HOOKS_URL);
         }
 
         // validate input
-
-        $errors = array();
 
         $hook = trim($mybb->input['hhook']);
 
@@ -786,6 +804,7 @@ function hooks_page_edit()
         if(!$errors && !$mybb->input['preview'])
         {
             $data = array(
+                'hactive' => '0',
                 'htitle' => $db->escape_string($title),
                 'hdescription' => $db->escape_string($description),
                 'hhook' => $db->escape_string($hook),
@@ -793,6 +812,8 @@ function hooks_page_edit()
                 'hcode' => $db->escape_string($code),
                 'hargument' => $db->escape_string($argument),
                 );
+
+            $update = 0;
 
             if($hid)
             {
@@ -894,7 +915,10 @@ function hooks_page_edit()
 
     $form_container->output_row(
         $lang->hooks_argument,
-        $lang->hooks_argument_desc,
+        $lang->sprintf(
+            $lang->hooks_argument_desc,
+            $argument
+        ),
         $form->generate_text_box('hargument',
                                  $mybb->input['hargument'],
                                  array('id' => 'hargument')),

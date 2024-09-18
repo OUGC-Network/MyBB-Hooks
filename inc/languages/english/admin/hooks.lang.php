@@ -25,7 +25,7 @@ $l = array(
     'hooks_activate' => 'Activate',
     'hooks_activated' => 'The selected hook has been activated.',
     'hooks_argument' => 'Argument',
-    'hooks_argument_desc' => "If this hook takes an argument / parameter, enter the desired variable name here. For example, if you set this to 'arg', you can use $arg in your code.",
+    'hooks_argument_desc' => "If this hook takes an argument / parameter, enter the desired variable name here. For example, if you set this to 'arg', you can use {1} in your code.",
     'hooks_cancel' => 'Cancel',
     'hooks_code' => 'Code',
     'hooks_code_desc' => 'Enter the PHP code that should be executed for this hook.',
@@ -95,6 +95,6 @@ $l = array(
     'hooks_tab_desc' => 'This section allows you to create and manage plugin hooks.',
     'hooks_title' => 'Title',
     'hooks_title_desc' => 'Enter a title for this hook.',
+    'hooks_tick' => '',
+    'hooks_cross' => 'Deactivated',
     );
-
-?>
